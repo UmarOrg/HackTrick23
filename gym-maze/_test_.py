@@ -18,6 +18,10 @@ import traceback
 import numpy as np
 import tensorflow as tf
 import copy
+from tensorflow.python.client import device_lib 
+print(device_lib.list_local_devices())
+
+
 
 import warnings
 warnings.filterwarnings("ignore")
