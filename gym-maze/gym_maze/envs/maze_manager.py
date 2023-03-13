@@ -59,19 +59,19 @@ class MazeManager():
                 riddle.solve_riddle(solution)
                 
                 if riddle.solved():
-                    print(riddle_type)
-                    print("riddle solved")
+                    # print(riddle_type)
+                    # print("riddle solved")
                     if not self.maze_map[agent_id].maze_view.maze.get_rescue_item(tuple(robot)).rescued:
                         self.maze_map[agent_id].maze_view.maze.get_rescue_item(tuple(robot)).rescued = True
-                        print("rescued")
-                        print()
+                        # print("rescued")
+                        # print()
                         self.maze_map[agent_id].maze_view.increment_rescue_items()
                 else:
-                    print("riddle failed")
-                    print(riddle_type)
+                    # print("riddle failed")
+                    # print(riddle_type, solution)
                     self.maze_map[agent_id].maze_view.maze.get_rescue_item(tuple(robot)).rescued = True
-                    print("rescue item nulled")
-                    print()
+                    # print("rescue item nulled")
+                    # print()
         
         elif riddle.attempts==0:
             print("wrong riddle type")
@@ -81,9 +81,6 @@ class MazeManager():
             print("rescue item nulled")
             print()
             
-        
-
-
         return self.maze_map[agent_id].get_current_state()
         
         
@@ -109,7 +106,6 @@ class MazeManager():
                 question = self.pull_riddle(riddle_type, agent_id)
                 info['riddle_type'] = riddle_type
                 info['riddle_question'] = question
-
 
         return obv, reward, terminated, truncated, info
 
@@ -157,7 +153,7 @@ class MazeManager():
         else:
             raise('Agent Not Found')
         
-    def calculate_final_score(self, agent_id,riddlesTimeDictionary):
+    def calculate_final_score(self, agent_id, riddlesTimeDictionary):
         rescue_score = (1000*self.maze_map[agent_id].maze_view.rescued_items)/(self.maze_map[agent_id].steps)
         riddles_score = 0
         riddles_score_dict = dict()
@@ -243,14 +239,15 @@ class RiddleContainer():
     
     def reset_riddles(self):
         self.cipher_riddle.set_solved(False)
-        self.server_riddle.set_solved(False)
-        self.pcap_riddle.set_solved(False)
-        self.captcha_riddle.set_solved(False)
-        
         self.cipher_riddle.attempts = 0
+        self.server_riddle.set_solved(False)
         self.server_riddle.attempts = 0
+        self.pcap_riddle.set_solved(False)
         self.pcap_riddle.attempts = 0
+        self.captcha_riddle.set_solved(False)
         self.captcha_riddle.attempts = 0
+        
+
 
     
 class Riddle:
@@ -335,8 +332,10 @@ class ServerRiddle(Riddle):
         ## end load riddle
         
     def solve_riddle(self, solution):
+        self.attempts += 1 
+        self._solved = solution == self.riddle_solution
         ### the logic to verify the server riddle locally is to be implemented by your team ###
-        pass
+        # pass <<<<<<<<
         
 class PcapRiddle(Riddle):
     def __init__(self, riddle_type, riddle_dir_path):
@@ -354,9 +353,6 @@ class PcapRiddle(Riddle):
         self.riddle_question = riddle['question']
         self.riddle_solution = riddle['solution']
         ## end load riddle
-    
-        
-        
 
 
 if __name__ == "__main__":
